@@ -7,13 +7,13 @@
 * Ikram Celal KESKIN
 * Mert KARDAS
 
-### Suggesting Algorithms
+### Suggesting Algorithms :bulb:
 
 > If you want an algorithm that you want to be implemented you can simply open a discussion or issue.
 > * Open issue as a feature request and tag developers. :writing_hand:
 > * Open discussion as a idea suggestion and tag developers. :writing_hand:
 
-### Contributing
+### Contributing :white_check_mark:
 
 > If you want to contribute, you are always welcome so, you can start by checking issues, and if you want you simply open a PR :thumbsup:
 
