@@ -1,6 +1,6 @@
 # NumeriCal :abacus:
 
-> NumeriCal is a math equation optimization and root-finding program that can be used with [Liman](https://github.com/limanmys/core) HAVELSAN OSS, also it can be used with Pardus. That project started as a lecture project of [Asc. Prof. Dr. Bora Canbula](https://github.com/canbula) [his website](https://canbula.com/).
+> NumeriCal is a math equation optimization and root-finding program that can be used with [Liman](https://github.com/limanmys/core) HAVELSAN OSS. That project started as a lecture project of [Asc. Prof. Dr. Bora Canbula](https://github.com/canbula) [his website](https://canbula.com/).
 
 ### Development Team :computer:
 * Musa Sina ERTUGRUL :muscle:
