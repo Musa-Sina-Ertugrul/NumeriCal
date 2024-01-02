@@ -1,55 +1,39 @@
+from matplotlib import pyplot as plt
 import numpy as np
-import json
 
 
 
-class Fixed_Point:
-    def __init__(self,expression,initial_guess,tolerance,max_iterations):
-        """
-        Initializes the Fixed_Point class.
-
-        Parameters:
-            expression (function): The original function f(x) for which we want to find the root.
-            initial_guess (float): Initial guess for the root.
-            tolerance (float): Tolerance, a small value to stop iterations.
-            max_iterations (int): Maximum number of iterations.
-        """
-        self.expression = expression
-        self.initial_guess = initial_guess
-        self.tolerance = tolerance
-        self.max_iterations = max_iterations
-    
-    def transform_function(self,x):
-        """
-        Transforms the original function f(x) into the equivalent form x = g(x).
-
-        Parameters:
-            x (float): Input value.
-
-        Returns:
-            float: Transformed value.
-        """
-        # Replace this with your specific transformation
-        return NotImplementedError
-    
-    def find_root(self):
-        """
-        Finds a root of the original function using the Fixed-Point Iteration Method.
-
-        Returns:
-            float: Approximation of the root.
-            int: Number of iterations performed.
-        """
-        return NotImplementedError
+def fixpt(f, x, epsilon=1.0E-4, N=500, store=False):
+    y = f(x)
+    n = 0
+    if store: Values = [(x, y)]
+    while abs(y-x) >= epsilon and n < N:
+        x = f(x)
+        n += 1
+        y = f(x)
+        if store: Values.append((x, y))
+    if store:
+        return y, Values
+    else:
+        if n >= N:
+            return "No fixed point for given start value"
+        else: 
+            return x, n, y
+# define f
+def f(x):
+    return 0.2*x*x
 
 
-
-def test():
-    expression = input("Enter the function f(x): ")
-    x_0 = input("Enter the initial guess x_0: ")
-    tol = input("Enter the tolerance (e.g., 1e-6): ")
-    max_iter = input("Enter the maximum number of iterations: ")
-    Fixed_Point(expression,x_0,tol,max_iter)
-
-if __name__== '__main__':
-    test()
+# find fixed point
+res, points = fixpt(f, 3, store = True)
+# create mesh for plots
+xx = np.arange(0, 6, 0.1)
+#plot function and identity
+plt.plot(xx, f(xx), 'b')
+plt.plot(xx, xx, 'r')
+# plot lines
+for x, y in points:
+    plt.plot([x, x], [x, y], 'g')
+    plt.plot([x, y], [y, y], 'g')
+# show result
+plt.show()
