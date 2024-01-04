@@ -1,12 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixed-Point Iteration GUI</title>
+    <title>Fixed Point Iteration</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>Welcome to Fixed-Point Iteration GUI</h1>
-    <!-- Add your HTML content for the GUI -->
+    <div class="row">
+        <div id="input-section">
+            <p class="labels">Input Parameters<p>
+            <div class="input-container">
+                <label for="Function">Function:</label>
+                <input type="text" id="Function" name="Function" value="x^3 - 3*x">
+            </div>
+            <div class="input-container">
+                <label for="size">Initial Value:</label>
+                <input type="text" id="size" name="size" value="">
+            </div>
+            <div class="input-container">
+                <label for="max_iter">Iteration Count:</label>
+                <input type="text" id="max_iter" name="max_iter" value="100">
+            </div>
+            <div class="input-container">
+                <label for="tolerance">Tolerance:</label>
+                <input type="text" id="tolerance" name="tolerance" value="1e-6">
+            </div>
+
+            <button onclick="fetchData()">Calculate</button>
+        </div>
+
+        <div id="output-section">
+            <p class ="labels">Results<p>
+            <!-- Display the results here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
