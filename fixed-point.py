@@ -161,49 +161,8 @@ def fixed_point_method(
 
     return result
 
-    # Plotting code
-    plt.figure(figsize=(8, 6))
-    plt.plot(range(len(roots)), roots, "ro-", label="Root at each iteration")
-    plt.xlabel("Iteration")
-    plt.ylabel("Root")
-    plt.title("Fixed-Point Method")
-    plt.legend()
-    plt.show()
-
-    return roots, iterations
-
-
-def plot_convergence(iterations, roots, true_root=None, title="Convergence Plot"):
-    """
-    Plot the convergence of the fixed-point method.
-
-    Parameters:
-    - iterations: Number of iterations performed
-    - roots: Computed roots at each iteration
-    - true_root: True root value for reference (if available)
-    - title: Plot title
-    """
-    fig, ax = plt.subplots()
-    ax.plot(range(len(roots)), roots)
-    if true_root is not None:
-        ax.axhline(true_root, color="r", linestyle="--")
-        ax.set_title(title)
-        ax.set_ylabel("Approximation")
-        ax.set_xlabel("Iteration")
-
-    else:
-        ax.set_title(title + " (No known true root)")
-        ax.set_ylabel("Approximation")
-        ax.set_xlabel("Iteration")
-        ax2 = ax.twinx()
-        ax2.plot(range(len(iterations)), iterations, "b--")
-        ax2.set_ylabel("# Iterations")
-        plt.show()
-
-
 class NoAssumption(RuntimeError):
     pass
-
 
 class ReturnThread(Thread):
     def __init__(
