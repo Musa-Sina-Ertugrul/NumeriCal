@@ -45,3 +45,5 @@ function fetchData() {
         console.error("Error fetching data:", error);
     });
 }
+
+function drawgif(){} //matplotlib i guess
