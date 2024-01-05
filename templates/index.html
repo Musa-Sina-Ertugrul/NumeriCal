@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Fixed Point Iteration</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
@@ -16,12 +16,12 @@
                 <input type="text" id="Function" name="Function" value="x^3 - 3*x">
             </div>
             <div class="input-container">
-                <label for="size">Initial Value:</label>
-                <input type="text" id="size" name="size" value="">
+                <label for="x0">Initial Value:</label>
+                <input type="number" id="x0" name="x0" value="">
             </div>
             <div class="input-container">
                 <label for="max_iter">Iteration Count:</label>
-                <input type="text" id="max_iter" name="max_iter" value="100">
+                <input type="number" id="max_iter" name="max_iter" min="1" max="100" value="100">
             </div>
             <div class="input-container">
                 <label for="tolerance">Tolerance:</label>
@@ -33,11 +33,11 @@
 
         <div id="output-section">
             <p class ="labels">Results<p>
-            <!-- Display the results here -->
+            <!-- Display the graph here -->
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="/static/js/script.js"></script>
 </body>
 
 </html>
