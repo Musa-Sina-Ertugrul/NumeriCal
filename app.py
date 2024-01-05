@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify, render_template
 import json
+from flask import Flask, request, jsonify, render_template
+from fixed_point import main
 
 app = Flask(__name__)
 
@@ -12,26 +13,26 @@ def home():
 def calculate():
     try:
         data = request.get_json()
-        func,x0,max_iter,tolerance = decode_json(data)
-        root,iterations_number= fixedPoint(func,x0,max_iter,tolerance) #TODO:Handle the fixed point please
-        encrypted_data= encode_json(root,iterations_number)
+        func,max_iter,tolerance = decode_json(data)
+        result= main(func,max_iter,tolerance) 
+        print(result)
+        encrypted_data= encode_json(result)
+        print(f"{encrypted_data}")
         return jsonify({"result": encrypted_data}), 200
     except Exception as e:
         print(e)
         return jsonify({"error": "Invalid payload"}), 400
 
 def decode_json(data:json):
-    func=data.get("func",None)
-    x0=data.get("x0",None)
+    func=str(data.get("func",None))
+    # x0=data.get("x0",None)
     max_iter=data.get("max_iter",None)
     tolerance=data.get("tolerance",None)
-    print(f"func:{func} \n x0:{x0} \n max_iter:{max_iter} \n tolerance:{tolerance} \n ")
-    return func,x0,max_iter,tolerance
+    return func,max_iter,tolerance
 
-def encode_json(root,iterations):
-
-    return jsonify({"root":root,
-                    "iterations":iterations})
+def encode_json(results):
+    return json.dumps({"roots":list([f"{result[-1]:.2f}" for result in results ]),
+                        "iterations":[len(result) for result in results]})
 
 
 if __name__ == '__main__':

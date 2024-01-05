@@ -3,10 +3,10 @@ func.addEventListener("input", (event) => {
     func_value.innerHTML = event.target.value;
 });
 
-let x0 = document.getElementById("x0");
-x0.addEventListener("input", (event) => {
-    x0_value.innerHTML = event.target.value;
-});
+// let x0 = document.getElementById("x0");
+// x0.addEventListener("input", (event) => {
+//     x0_value.innerHTML = event.target.value;
+// });
 
 let max_iter = document.getElementById("max_iter");
 max_iter.addEventListener("input", (event) => {
@@ -20,7 +20,7 @@ tolerance.addEventListener("input", (event) => {
 
 function fetchData() {
     let func = document.getElementById("Function").value;
-    let x0 = document.getElementById("x0").value;
+    // let x0 = document.getElementById("x0").value;
     let max_iter = document.getElementById("max_iter").value;
     let tolerance = document.getElementById("tolerance").value;
 
@@ -31,7 +31,7 @@ function fetchData() {
         },
         body: JSON.stringify({
             func: func,
-            x0: x0,
+            // x0: x0,
             max_iter: max_iter,
             tolerance: tolerance
         }),
