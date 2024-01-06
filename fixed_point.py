@@ -245,7 +245,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
 
     results: list = [thread.result for thread in threads]
 
-    make_func_imgs(expr, g_x)
+    #make_func_imgs(expr, g_x)
 
     return results
 

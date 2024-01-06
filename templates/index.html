@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Fixed Point Iteration</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -13,7 +14,7 @@
             <p class="labels">Input Parameters<p>
             <div class="input-container">
                 <label for="Function">Function:</label>
-                <input type="text" id="Function" name="Function" value="x^3 - 3*x">
+                <input type="text" id="Function" name="Function" value="x**2 + 4">
             </div>
             <!-- <div class="input-container">
                 <label for="x0">Initial Value:</label>
@@ -32,8 +33,8 @@
         </div>
 
         <div id="output-section">
-            <p class ="labels">Results<p>
-            <!-- Display the graph here -->
+            <p class ="labels">Fixed-Point Method<p>
+                <canvas id="myChart"></canvas>
         </div>
     </div>
 
