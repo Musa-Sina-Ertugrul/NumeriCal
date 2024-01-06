@@ -1,3 +1,4 @@
+from threading import Thread
 from collections.abc import Callable, Iterable, Mapping
 from threading import Thread
 from typing import Any
@@ -219,7 +220,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     dicts_1: list = [
         {
             "target": fixed_point_method,
-            "args": (expr, g, assumption - 0.1, max_iter, tolerance),
+            "args": (expr, g, assumption - 2*tolerance, max_iter, tolerance),
         }
         for assumption in assumptions
         for g in g_x
@@ -227,7 +228,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     dicts_2: list = [
         {
             "target": fixed_point_method,
-            "args": (expr, g, assumption + 0.1, max_iter, tolerance),
+            "args": (expr, g, assumption + 2*tolerance, max_iter, tolerance),
         }
         for assumption in assumptions
         for g in g_x
@@ -253,4 +254,4 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
 if __name__ == "__main__":
     init_printing(use_latex="mathjax")
     # Find the root using the fixed-point method
-    print(main("x**2 - 4"))
+    print(main("x**2 - 2"))

@@ -14,10 +14,7 @@ def calculate():
     try:
         data = request.get_json()
         func,max_iter,tolerance = decode_json(data)
-        print(func)
-        print(max_iter)
-        print(tolerance)
-        result= main(func,max_iter,tolerance) 
+        result= main(str(func),int(max_iter),float(tolerance)) 
         print(result)
         encrypted_data= encode_json(result)
         print(f"{encrypted_data}")
