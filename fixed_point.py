@@ -1,7 +1,6 @@
 from collections.abc import Callable, Iterable, Mapping
+from threading import Thread
 from typing import Any
-import numpy as np
-import matplotlib.pyplot as plt
 from numba import jit
 from sympy import (
     Symbol,
