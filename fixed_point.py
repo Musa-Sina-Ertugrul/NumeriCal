@@ -12,16 +12,19 @@ from sympy import (
     Eq,
     preview,
     init_printing,
-    sympify
+    sympify,
 )
 from sympy.parsing.sympy_parser import parse_expr
 from sympy.polys.polyerrors import PolynomialError
 
+
 class NoAssumption(RuntimeError):
     pass
 
+
 class ImeginaryNumber(RuntimeError, TypeError, ValueError):
     pass
+
 
 def take_diff(expr):
     x = Symbol("x")
@@ -152,10 +155,10 @@ def fixed_point_method(
     result: list = []
     error_1: float = 1.0
     error_2: float = 1.0
-    imag : bool = False
-    while max_iter > 0 and error_1 > tolerance*1000 and error_2 > tolerance*1000:
+    imag: bool = False
+    while max_iter > 0 and error_1 > tolerance * 1000 and error_2 > tolerance * 1000:
         x_new: float = g_x.evalf(subs={"y": x0})
-        if not sympify(x_new).is_real :
+        if not sympify(x_new).is_real:
             imag = True
             break
         error_1 = abs(x_new - x0)
@@ -164,14 +167,16 @@ def fixed_point_method(
         x0 = x_new
         max_iter -= 1
     if imag:
-        return fixed_complex_point_iteration(expr,x0,max_iter,tolerance)
+        return fixed_complex_point_iteration(expr, x0, max_iter, tolerance)
     return result
 
-def fixed_complex_point_iteration(expr, x0: float, max_iter: int = 100, tolerance: float = 1e-6) -> list:
 
+def fixed_complex_point_iteration(
+    expr, x0: float, max_iter: int = 100, tolerance: float = 1e-6
+) -> list:
     result: list = []
     error_1: float = 1.0
-    while max_iter > 0 and error_1 > tolerance*1000 :
+    while max_iter > 0 and error_1 > tolerance * 1000:
         x_new: float = expr.evalf(subs={"x": x0})
         error_1 = abs(x_new)
         result.append(x0)
@@ -179,6 +184,7 @@ def fixed_complex_point_iteration(expr, x0: float, max_iter: int = 100, toleranc
         max_iter -= 1
 
     return result
+
 
 class ReturnThread(Thread):
     def __init__(
@@ -237,7 +243,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     dicts_1: list = [
         {
             "target": fixed_point_method,
-            "args": (expr, g, assumption - 2*tolerance, max_iter, tolerance),
+            "args": (expr, g, assumption - 2 * tolerance, max_iter, tolerance),
         }
         for assumption in assumptions
         for g in g_x
@@ -245,7 +251,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     dicts_2: list = [
         {
             "target": fixed_point_method,
-            "args": (expr, g, assumption + 2*tolerance, max_iter, tolerance),
+            "args": (expr, g, assumption + 2 * tolerance, max_iter, tolerance),
         }
         for assumption in assumptions
         for g in g_x
