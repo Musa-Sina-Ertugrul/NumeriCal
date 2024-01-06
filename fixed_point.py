@@ -17,6 +17,11 @@ from sympy import (
 from sympy.parsing.sympy_parser import parse_expr
 from sympy.polys.polyerrors import PolynomialError
 
+class NoAssumption(RuntimeError):
+    pass
+
+class ImeginaryNumber(RuntimeError, TypeError, ValueError):
+    pass
 
 def take_diff(expr):
     x = Symbol("x")
@@ -120,10 +125,6 @@ def check_opposite_direction(directions: list):
 
 def make_assumption(extremums: list, directions: list, signs: list) -> list:
     points = []
-    if all([True if sign == "+" else False for sign in signs]) or all(
-        [True if sign == "-" else False for sign in signs]
-    ):
-        return points
     for i, extremum in enumerate(extremums):
         if check_opposite_direction(directions[i:]) and check_opposite_sign(signs[i:]):
             points.append(extremum)
@@ -151,19 +152,16 @@ def fixed_point_method(
     result: list = []
     error_1: float = 1.0
     error_2: float = 1.0
-
-    while max_iter > 0 and error_1 > tolerance and error_2 > tolerance:
-        x_new: float = g_x.evalf(subs={"y": x0}).rhs
+    while max_iter > 0 and error_1 > tolerance*1000 and error_2 > tolerance*1000:
+        x_new: float = g_x.evalf(subs={"y": x0})
         error_1 = abs(x_new - x0)
         error_2 = abs(expr.evalf(subs={"x": x_new}))
-        result.append(x0)
+        result.append(x_new)
         x0 = x_new
         max_iter -= 1
 
     return result
 
-class NoAssumption(RuntimeError):
-    pass
 
 class ReturnThread(Thread):
     def __init__(
@@ -191,7 +189,7 @@ def make_g_x(expr):
     eq = Eq(expr, y)
     result: list = []
     for solved_eq in solve(eq, x):
-        result.append(Eq(x, solved_eq))
+        result.append(solved_eq)
     return result
 
 
@@ -248,6 +246,10 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     results: list = [thread.result for thread in threads]
 
     make_func_imgs(expr, g_x)
+
+    if None in results:
+        while None in results:
+            results.remove(None)
 
     return results
 
