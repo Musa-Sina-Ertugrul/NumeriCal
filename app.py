@@ -19,12 +19,15 @@ def calculate():
         encrypted_data= encode_json(result)
         print(f"{encrypted_data}")
         return jsonify({"result": encrypted_data}), 200
+    except TypeError as t:
+        print (t)
+        return json.dumps({"error":"TypeError"}), 401
     except Exception as e:
         print(e)
-        return jsonify({"error": "Invalid payload"}), 400
+        return jsonify({"error": e}), 400
 
 def decode_json(data:json):
-    func=str(data.get("func",None))
+    func=data.get("func",None)
     # x0=data.get("x0",None)
     max_iter=data.get("max_iter",None)
     tolerance=data.get("tolerance",None)

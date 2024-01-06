@@ -1,8 +1,7 @@
 from threading import Thread
 from collections.abc import Callable, Iterable, Mapping
+from threading import Thread
 from typing import Any
-import numpy as np
-import matplotlib.pyplot as plt
 from numba import jit
 from sympy import (
     Symbol,
@@ -245,7 +244,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
 
     results: list = [thread.result for thread in threads]
 
-    make_func_imgs(expr, g_x)
+    #make_func_imgs(expr, g_x)
 
     if None in results:
         while None in results:

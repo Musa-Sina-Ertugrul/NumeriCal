@@ -23,6 +23,11 @@ function fetchData() {
     // let x0 = document.getElementById("x0").value;
     let max_iter = document.getElementById("max_iter").value;
     let tolerance = document.getElementById("tolerance").value;
+    // func_value.innerHTML = func;
+    // x0_value.innerHTML = event.target.value;
+    // max_iter_value.innerHTML = max_iter;
+    // tolerance_value.innerHTML = tolerance;
+
 
     fetch("http://127.0.0.1:5000/calculate", {
         method: "POST",
@@ -46,4 +51,38 @@ function fetchData() {
     });
 }
 
-function drawgif(){} //matplotlib i guess
+  // X değerlerini ve Y değerlerini hesaplayın
+  const data = {
+    labels: [],
+    datasets: [{
+      label: 'Function',
+      data: [document.getElementById("Function").value],
+      fill: false,
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2
+    }]
+  };
+
+  for (let x = -5; x <= 5; x += 0.1) {
+    data.labels.push(x);
+    data.datasets[0].data.push(document.getElementById("Function"));
+  }
+
+  // Grafiği çizdirin
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+      scales: {
+        x: {
+          type: 'linear',
+          position: 'bottom'
+        },
+        y: {
+          type: 'linear',
+          position: 'left'
+        }
+      }
+    }
+  });
