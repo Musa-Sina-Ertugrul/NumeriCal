@@ -59,12 +59,8 @@ def find_lims(expr, extremums: list, tolerance: float = 1e-6) -> list:
 
 def find_signs(lims: list) -> list:
     signs = [
-        "+"
+        "-"
         if e2 > e and e2 > 0
-        else "-"
-        if e2 > e and e2 < 0
-        else "+"
-        if e2 < e and e2 < 0
         else "-"
         for e, e2 in lims[:-1]
     ]
@@ -72,11 +68,7 @@ def find_signs(lims: list) -> list:
         *[
             "+"
             if e2 > e and e2 > 0
-            else "+"
-            if e2 > e and e2 < 0
             else "-"
-            if e2 < e and e2 < 0
-            else "+"
             for e, e2 in lims[-1:]
         ]
     )
@@ -104,32 +96,30 @@ def find_up_down(lims: list):
     return directions
 
 
-def check_opposite_sign(signs: list) -> bool:
+def check_opposite_sign(signs: list, extremum : float) -> bool:
     match signs[0]:
         case "+":
-            return "-" in set(signs[1:])
+            return "-" in set(signs[1:]) and extremum > 0
         case "-":
-            return "+" in set(signs[1:])
-        case _:
-            raise NoAssumption("Wrong Sign")
+            return "+" in set(signs[1:]) and extremum < 0
+    return True
+        
 
 
-def check_opposite_direction(directions: list):
+def check_opposite_direction(directions: list, extremum : float):
     if directions != []:
         match directions[0]:
             case "u":
-                return "d" in set(directions[1:])
+                return "d" in set(directions[1:]) and extremum > 0
             case "d":
-                return "u" in set(directions[1:])
-            case _:
-                raise NoAssumption("Wrong Sign")
+                return "u" in set(directions[1:])and extremum < 0     
     return True
 
 
 def make_assumption(extremums: list, directions: list, signs: list) -> list:
     points = []
     for i, extremum in enumerate(extremums):
-        if check_opposite_direction(directions[i:]) and check_opposite_sign(signs[i:]):
+        if check_opposite_direction(directions[i:],extremum) and check_opposite_sign(signs[i:],extremum):
             points.append(extremum)
 
     return points
@@ -236,7 +226,6 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     lims_second_diff: list = find_lims(expr, extremum_first_diff, tolerance)
     directions: list = find_up_down(lims_second_diff)
     assumptions: list = make_assumption(extremums, directions, signs)
-    assumptions = assumptions if assumptions != [] else extremums
     if assumptions == []:
         raise NoAssumption("Starting point did not be found, Use different function")
     print(assumptions)
