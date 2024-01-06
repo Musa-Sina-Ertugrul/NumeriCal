@@ -12,6 +12,7 @@ from sympy import (
     Eq,
     preview,
     init_printing,
+    sympify
 )
 from sympy.parsing.sympy_parser import parse_expr
 from sympy.polys.polyerrors import PolynomialError
@@ -151,16 +152,33 @@ def fixed_point_method(
     result: list = []
     error_1: float = 1.0
     error_2: float = 1.0
+    imag : bool = False
     while max_iter > 0 and error_1 > tolerance*1000 and error_2 > tolerance*1000:
         x_new: float = g_x.evalf(subs={"y": x0})
+        if not sympify(x_new).is_real :
+            imag = True
+            break
         error_1 = abs(x_new - x0)
         error_2 = abs(expr.evalf(subs={"x": x_new}))
         result.append(x_new)
         x0 = x_new
         max_iter -= 1
-
+    if imag:
+        return fixed_complex_point_iteration(expr,x0,max_iter,tolerance)
     return result
 
+def fixed_complex_point_iteration(expr, x0: float, max_iter: int = 100, tolerance: float = 1e-6) -> list:
+
+    result: list = []
+    error_1: float = 1.0
+    while max_iter > 0 and error_1 > tolerance*1000 :
+        x_new: float = expr.evalf(subs={"x": x0})
+        error_1 = abs(x_new)
+        result.append(x0)
+        x0 = x_new
+        max_iter -= 1
+
+    return result
 
 class ReturnThread(Thread):
     def __init__(
@@ -215,6 +233,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
     assumptions = assumptions if assumptions != [] else extremums
     if assumptions == []:
         raise NoAssumption("Starting point did not be found, Use different function")
+    print(assumptions)
     dicts_1: list = [
         {
             "target": fixed_point_method,
@@ -244,7 +263,7 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
 
     results: list = [thread.result for thread in threads]
 
-    #make_func_imgs(expr, g_x)
+    make_func_imgs(expr, g_x)
 
     if None in results:
         while None in results:
@@ -256,4 +275,4 @@ def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
 if __name__ == "__main__":
     init_printing(use_latex="mathjax")
     # Find the root using the fixed-point method
-    print(main("x**2 - 2"))
+    print(main("x**2 + 2*x + 1"))
