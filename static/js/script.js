@@ -25,8 +25,13 @@ function fetchData() {
   })
     .then(response => response.json())
     .then(data => {
-      // Handle the response data here or modify the sendJsontoPython function
-      console.log("Response data:", data);
+      
+      const roots = data.roots.map(Number); 
+      const iterations = data.iterations; 
+
+      myChart.data.labels = iterations; 
+      myChart.data.datasets[0].data = roots; 
+      myChart.update(); 
     })
     .catch(error => {
       console.error("Error fetching data:", error);
@@ -82,8 +87,7 @@ function getDataPoints(func) {
   var dataPoints = [];
   for (var i = 1; i <= 10; i++) {
     try {
-      var result = eval(func.replace(/x/g, i));
-      console.log(result);
+      var result = math.evaluate(func.replace(/x/g, `(${i})`));
       dataPoints.push(result);
     } catch (error) {
       console.error("Error evaluating expression:", error);

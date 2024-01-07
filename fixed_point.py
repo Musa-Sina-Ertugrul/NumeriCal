@@ -19,19 +19,39 @@ from sympy.polys.polyerrors import PolynomialError
 
 
 class NoAssumption(RuntimeError):
+    """A custom exception class; used when no assumption can be found."""
     pass
 
 
 class ImeginaryNumber(RuntimeError, TypeError, ValueError):
+    """An error class related to imaginary numbers."""
     pass
 
 
 def take_diff(expr):
+    """
+    Computes the first derivative of a mathematical expression.
+
+    Args:
+    expr (sympy.Basic): The mathematical expression to differentiate.
+
+    Returns:
+    tuple: The first derivative and the symbol of the independent variable.
+    """
     x = Symbol("x")
     return diff(expr, x), x
 
 
 def find_extremums(expr) -> list:
+    """
+    Finds the extremum points of a mathematical expression.
+
+    Args:
+    expr (sympy.Basic): The mathematical expression to find extremums.
+
+    Returns:
+    list: List of extremum points.
+    """
     first_derivative, x = take_diff(expr)
     try:
         extremums: list = sorted(nroots(first_derivative, n=6))
@@ -41,6 +61,18 @@ def find_extremums(expr) -> list:
 
 
 def find_lims(expr, extremums: list, tolerance: float = 1e-6) -> list:
+    """
+    Finds the limits of a mathematical expression at specific points.
+
+    Args:
+    expr (sympy.Basic): The mathematical expression to find limits.
+    extremums (list): List of points where limits will be calculated.
+    tolerance (float): Tolerance for limit calculation.
+
+    Returns:
+    list: List of limits at the specified points.
+    """
+    
     lims: list = [
         (
             expr.evalf(subs={"x": extremum - tolerance}),
@@ -58,16 +90,43 @@ def find_lims(expr, extremums: list, tolerance: float = 1e-6) -> list:
 
 
 def find_signs(lims: list) -> list:
+    """
+    Determines the signs of a list of limits.
+
+    Args:
+    lims (list): List of limits.
+
+    Returns:
+    list: List of signs corresponding to the given limits.
+    """
     signs = ["-" if e2 > e and e2 > 0 else "-" for e, e2 in lims[:-1]]
     signs.append(*["+" if e2 > e and e2 > 0 else "-" for e, e2 in lims[-1:]])
     return signs
 
 
 def make_expression(func_repr: str) -> object:
+    """
+    Creates a symbolic expression from its string representation.
+
+    Args:
+    func_repr (str): String representation of the mathematical expression.
+
+    Returns:
+    object: The symbolic expression.
+    """
     return parse_expr(func_repr)
 
 
 def find_extremums_first_diff(expr) -> list:
+    """
+    Finds the extremum points using the second derivative of a mathematical expression.
+
+    Args:
+    expr (sympy.Basic): The mathematical expression.
+
+    Returns:
+    list: List of extremum points.
+    """
     second_derivative, x = take_diff(take_diff(expr)[0])
     try:
         extremums = sorted(nroots(second_derivative, n=6))
@@ -80,11 +139,30 @@ def find_extremums_first_diff(expr) -> list:
 
 
 def find_up_down(lims: list):
+    """
+    Determines whether the function is increasing or decreasing at specific points.
+
+    Args:
+    lims (list): List of limits.
+
+    Returns:
+    list: List of directions indicating whether the function is increasing ('u') or decreasing ('d').
+    """
     directions = ["u" if (e2 - e) < 0 else "d" for e2, e in lims]
     return directions
 
 
 def check_opposite_sign(signs: list, extremum: float) -> bool:
+    """
+    Checks if there is an opposite sign around a given extremum.
+
+    Args:
+    signs (list): List of signs.
+    extremum (float): The extremum point.
+
+    Returns:
+    bool: True if there is an opposite sign, False otherwise.
+    """
     match signs[0]:
         case "+":
             return "-" in set(signs[1:]) and extremum > 0
@@ -94,6 +172,16 @@ def check_opposite_sign(signs: list, extremum: float) -> bool:
 
 
 def check_opposite_direction(directions: list, extremum: float):
+    """
+    Checks if there is an opposite direction around a given extremum.
+
+    Args:
+    directions (list): List of directions.
+    extremum (float): The extremum point.
+
+    Returns:
+    bool: True if there is an opposite direction, False otherwise.
+    """
     if directions != []:
         match directions[0]:
             case "u":
@@ -104,6 +192,17 @@ def check_opposite_direction(directions: list, extremum: float):
 
 
 def make_assumption(extremums: list, directions: list, signs: list) -> list:
+    """
+    Makes assumptions about potential starting points for fixed-point iterations.
+
+    Args:
+    extremums (list): List of extremum points.
+    directions (list): List of directions indicating increasing ('u') or decreasing ('d').
+    signs (list): List of signs.
+
+    Returns:
+    list: List of assumed starting points for fixed-point iterations.
+    """
     points = []
     for i, extremum in enumerate(extremums):
         if check_opposite_direction(directions[i:], extremum) and check_opposite_sign(
@@ -153,6 +252,19 @@ def fixed_point_method(
 def fixed_complex_point_iteration(
     expr, x0: float, max_iter: int = 100, tolerance: float = 1e-6
 ) -> list:
+    
+    """
+    Finds the root of a function using the fixed-point method for complex roots.
+
+    Parameters:
+    - expr: Mathematical expression representing the function.
+    - x0: Initial guess.
+    - max_iter: Maximum number of iterations.
+    - tolerance: Tolerance for error.
+
+    Returns:
+    list: Computed roots at each iteration for complex roots.
+    """
     result: list = []
     error_1: float = 1.0
     while max_iter > 0 and error_1 > tolerance * 1000:
@@ -176,16 +288,37 @@ class ReturnThread(Thread):
         *,
         daemon: bool | None = None,
     ) -> None:
+        
+        """
+        A custom thread class that captures the result of the target function.
+
+        Parameters:
+        - target: Target function to be executed in the thread.
+        - args: Arguments to be passed to the target function.
+        """
+
         super().__init__(target=target, args=args)
         self.result = None
         self.target: callable = target
         self.args: Iterable[Any] = args
 
     def run(self) -> None:
+        """
+        Runs the target function in the thread and captures the result.
+        """
         self.result = self.target(*self.args)
 
 
 def make_g_x(expr):
+    """
+    Generates a list of functions from an expression by solving for the variable.
+
+    Args:
+    expr (sympy.Basic): The mathematical expression.
+
+    Returns:
+    list: List of functions obtained by solving the expression for the variable.
+    """
     x = Symbol("x")
     y = Symbol("y")
     eq = Eq(expr, y)
@@ -196,6 +329,13 @@ def make_g_x(expr):
 
 
 def make_func_imgs(expr, g_x: list) -> None:
+    """
+    Creates images of the mathematical expressions.
+
+    Args:
+    expr (sympy.Basic): The original mathematical expression.
+    g_x (list): List of expressions representing the fixed-point iteration functions.
+    """
     for i, g in enumerate(g_x):
         with open(f"g_x_{str(i)}.png", "wb") as outputfile:
             preview(g, viewer="BytesIO", outputbuffer=outputfile)
@@ -205,6 +345,17 @@ def make_func_imgs(expr, g_x: list) -> None:
 
 
 def main(func_repr: str, max_iter: int = 500, tolerance: float = 1e-6):
+    """
+    Main function orchestrating the entire process of finding roots using fixed-point iteration.
+
+    Args:
+    func_repr (str): String representation of the mathematical expression.
+    max_iter (int): Maximum number of iterations.
+    tolerance (float): Tolerance for error.
+
+    Returns:
+    list: Computed roots using fixed-point iteration.
+    """
     expr = make_expression(func_repr=func_repr)
     g_x = make_expression(func_repr=func_repr)
     g_x: list = make_g_x(g_x)
