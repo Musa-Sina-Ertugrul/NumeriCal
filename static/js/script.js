@@ -1,5 +1,6 @@
-
-
+/**
+ * Fetches data from the server and updates the chart.
+ */
 function fetchData() {
   let func = document.getElementById("Function").value;
   // let x0 = document.getElementById("x0").value;
@@ -74,6 +75,11 @@ document.getElementById("Function").addEventListener("input", function () {
   myChart.update();
 });
 
+/**
+ * Generates labels for the chart based on a predefined range.
+ * 
+ * @returns {Array} An array of labels.
+ */
 function getLabels() {
   var labels = [];
   for (var i = 1; i <= 10; i++) {
@@ -82,7 +88,12 @@ function getLabels() {
   return labels;
 }
 
-
+/**
+ * Evaluates mathematical expressions and retrieves data points for the chart.
+ * 
+ * @param {string} func - The mathematical expression.
+ * @returns {Array} An array of data points.
+ */
 function getDataPoints(func) {
   var dataPoints = [];
   for (var i = 1; i <= 10; i++) {
