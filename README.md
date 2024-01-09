@@ -1,59 +1,67 @@
 # NumeriCal :abacus:
 
-> NumeriCal is a math equation optimization and root-finding program. That project started as a lecture project of [Asc. Prof. Dr. Bora Canbula](https://github.com/canbula) [his website](https://canbula.com/).
+NumeriCal is a mathematical equation optimization and root-finding program developed by Musa Sina ERTUGRUL and Ikram Celal KESKIN.
 
-## Development Team :computer:
-* Musa Sina ERTUGRUL :muscle:
-* Ikram Celal KESKIN :muscle:
-* Mert KARDAS :muscle:
+## About
 
-## Suggesting Algorithms :bulb:
+NumeriCal started as a lecture project by [Asc. Prof. Dr. Bora Canbula](https://github.com/canbula). It is designed to find roots of mathematical functions using the Fixed-Point Iteration Method and provides a graphical user interface (GUI) for interactive use.
 
-> If you want an algorithm that you want to be implemented you can simply open a discussion or issue.
-> * Open issue as a feature request and tag developers. :writing_hand:
-> * Open discussion as a idea suggestion and tag developers. :writing_hand:
+## Features
 
-## Contributing :white_check_mark:
+- **Fixed-Point Iteration Method:** NumeriCal uses the Fixed-Point Iteration Method to find roots of mathematical functions.
+- **Extremum Points:** The program identifies extremum points of the function.
+- **Limits:** NumeriCal calculates limits at specific points for a given function.
+- **Function Direction:** Determines whether the function is increasing or decreasing at specific points.
+- **Custom Exceptions:** Includes custom exception classes like `NoAssumption` and `ImeginaryNumber`.
+- **Web API:** The program can be run as a web API, accepting JSON inputs and responding with JSON results.
+- **Graphical User Interface (GUI):** Provides an independent GUI for interacting with the API.
 
-> If you want to contribute, you are always welcome so, you can start by checking issues, and if you want you simply open a PR :thumbsup:
+## Usage
 
-## Guidelines
+To use NumeriCal, follow these steps:
 
->Your homework is to write a program, which will find a root of any function by using Fixed-Point Iteration Method. 
-This method is a iterative process for finding an approximation to a root of a function by repeatedly applying a transformation of that function, starting from an initial guess, until the process converges to a fixed point.
-## Required 
- latex program
+1. Clone the repository:
 
-#### Your program should use the following inputs:
+    ```bash
+    git clone https://github.com/yourusername/NumeriCal.git
+    ```
 
->* f(x): The function to find its root
->* x_0: The initial guess for iterative process
->* tol: A value, which is very close to zero, to stop the iterations
->* max_iter: The maximum number of iterations
+2. Install dependencies:
 
-#### Your program should satisfy the following requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
->* To find the transformed function for f(x)=0 -> x=g(x)
->* To converge to a root with iterations x_(n+1)=g(x_n)
->* To stop if ```|f(x_n)|<tol or if |x_n-x_(n-1)|<tol```
->* To stop if n>max_iter
->* To have a visual representation of the iterative process, like an animation on a plot
->* To get the inputs as JSON and response as JSON, so run as an API
->* To have an independent GUI to use this API
+3. Run the Flask web application:
 
-#### Delivery:
+    ```bash
+    python app.py
+    ```
 
->* Please upload a 2-3 minute video, which includes a demo of your program
->* Please upload your code in a single .zip file
->* Please upload a text file, which includes the student ids and names of the team members
->* Do not put video and text file in the .zip file
+4. Open a web browser and go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) to use the GUI.
 
-#### File structure:
->* video.mp4
->* team.txt
->* codes.zip
+## Requirements
 
-#### Other aspects:
->* The teams can be group of students up to 4 people
->* The deadline is 08.01.2024 23:59
->* This homework is graded as 10% of your total grade of this course
+- Python 3
+- Flask
+- Numba
+- SymPy
+- NumPy
+- Chart.js
+
+## Contributing
+
+Contributions to NumeriCal are welcome! If you want to contribute, you can start by checking the existing issues. Feel free to open a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE.md).
+
+## Contact
+
+For any inquiries or issues, feel free to contact the developers:
+
+- Musa Sina ERTUGRUL: [GitHub](https://github.com/musasinaertugrul)
+- Ikram Celal KESKIN: [GitHub](https://github.com/ikramcelalkeskin)
+
+Happy coding with NumeriCal! :rocket:
